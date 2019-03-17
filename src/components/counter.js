@@ -7,9 +7,25 @@ const ListItem = styled.li`
 `;
 
 export default class Counter extends Component {
-  state = {
-    items: []
-  };
+  constructor(props, context) {
+    super(props, context);
+    const items = localStorage.getItem("items");
+    console.log(JSON.parse(items));
+    if (items) {
+      this.state = {
+        items: JSON.parse(items)
+      };
+    } else {
+      this.state = {
+        items: []
+      };
+    }
+  }
+
+  updateLocalStorage() {
+    localStorage.setItem("items", JSON.stringify(this.state.items));
+  }
+
   increment = () => {
     const newState = { ...this.state };
     const id =
@@ -25,7 +41,7 @@ export default class Counter extends Component {
       count: 1
     };
     newState.items = [...newState.items, newItem];
-    this.setState(newState);
+    this.setState(newState, this.updateLocalStorage);
   };
   updateItemCount = (updateItem, decrease = false) => {
     const newState = { ...this.state };
@@ -45,19 +61,19 @@ export default class Counter extends Component {
       return item;
     });
     newState.items = newItems;
-    this.setState(newState);
+    this.setState(newState, this.updateLocalStorage);
   };
 
   removeItem = itemId => {
     const newState = { ...this.state };
     const newItems = newState.items.filter((item, index) => item.id !== itemId);
     newState.items = newItems;
-    this.setState(newState);
+    this.setState(newState, this.updateLocalStorage);
   };
   removeAll = () => {
     const newState = { ...this.state };
     newState.items = [];
-    this.setState(newState);
+    this.setState(newState, this.updateLocalStorage);
   };
   getTotalItems = () => {
     return this.state.items.reduce((tally, item) => tally + item.count, 0);
