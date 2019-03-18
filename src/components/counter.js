@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Item from "./item";
+import Item from "./Item";
 import styled from "styled-components";
 
 const ListItem = styled.li`

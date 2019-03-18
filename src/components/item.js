@@ -7,7 +7,7 @@ const Count = styled.span`
   margin-left: 2em;
 `;
 
-const Item = props => {
+export default props => {
   const item = props.data;
   const handleCountClick = e => {
     props.updateItemCount(item, e.target.getAttribute("data-type") !== "add");
@@ -44,5 +44,3 @@ const Item = props => {
     </>
   );
 };
-
-export default Item;
