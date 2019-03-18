@@ -9,97 +9,76 @@ const ListItem = styled.li`
 export default class Counter extends Component {
   constructor(props, context) {
     super(props, context);
-    const items = localStorage.getItem("items");
-    console.log(JSON.parse(items));
-    if (items) {
-      this.state = {
-        items: JSON.parse(items)
-      };
-    } else {
-      this.state = {
-        items: []
-      };
-    }
-  }
-
-  updateLocalStorage() {
-    localStorage.setItem("items", JSON.stringify(this.state.items));
+    let items = localStorage.getItem("items");
+    items = items ? JSON.parse(items) : [];
+    this.state = {
+      items
+    };
   }
 
   increment = () => {
     const newState = { ...this.state };
-    const id =
-      Math.random()
-        .toString(36)
-        .substring(2, 15) +
-      Math.random()
-        .toString(36)
-        .substring(2, 15);
-    const newItem = {
-      title: "Item " + id,
-      id: id,
-      count: 1
-    };
-    newState.items = [...newState.items, newItem];
-    this.setState(newState, this.updateLocalStorage);
+    const id = Math.random()
+      .toString(30)
+      .substring(2, 6);
+    newState.items = [
+      ...newState.items,
+      {
+        title: "Item " + id,
+        id,
+        count: 1
+      }
+    ];
+    this.setState(newState, this.refreshStorage);
   };
+
   updateItemCount = (updateItem, decrease = false) => {
     const newState = { ...this.state };
-    const newItems = newState.items.map((item, index) => {
+    newState.items = newState.items.map((item, index) => {
       if (item.id === updateItem.id) {
-        const newItem = { ...item };
         if (!decrease) {
-          newItem.count++;
+          item.count++;
         } else {
-          newItem.count--;
-          if (newItem.count < 1) {
-            newItem.count = 0;
+          item.count--;
+          if (item.count < 1) {
+            item.count = 0;
           }
         }
-        return newItem;
       }
       return item;
     });
-    newState.items = newItems;
-    this.setState(newState, this.updateLocalStorage);
+    this.setState(newState, this.refreshStorage);
   };
 
   removeItem = itemId => {
     const newState = { ...this.state };
-    const newItems = newState.items.filter((item, index) => item.id !== itemId);
-    newState.items = newItems;
-    this.setState(newState, this.updateLocalStorage);
+    newState.items = newState.items.filter(item => item.id !== itemId);
+    this.setState(newState, this.refreshStorage);
   };
-  removeAll = () => {
-    const newState = { ...this.state };
-    newState.items = [];
-    this.setState(newState, this.updateLocalStorage);
-  };
-  getTotalItems = () => {
-    return this.state.items.reduce((tally, item) => tally + item.count, 0);
-  };
+  refreshStorage = () =>
+    localStorage.setItem("items", JSON.stringify(this.state.items));
+  removeAll = () =>
+    this.setState({ ...this.state, items: [] }, this.refreshStorage);
+  getTotalItems = () =>
+    this.state.items.reduce((tally, item) => tally + item.count, 0);
   getUniqueItems = () =>
-    this.state.items.reduce(
-      (tally, item) => (item.count > 0 ? tally + 1 : tally),
-      0
-    );
+    this.state.items.reduce((t, i) => (i.count > 0 ? t + 1 : t), 0);
   getCountColor = () =>
-    this.getTotalItems() > 0
-      ? "badge m-2 badge-primary"
-      : "badge m-2 badge-secondary";
+    this.getTotalItems() > 0 ? "badge-primary" : "badge-secondary";
+
   render() {
     return (
       <>
-        <span className={this.getCountColor()}>
-          Unique items: {this.getUniqueItems()}
+        <span className={`badge m-1 ${this.getCountColor()}`}>
+          Unique: {this.getUniqueItems()}
         </span>
-        <span className={this.getCountColor()}>
-          Total items: {this.getTotalItems()}
+        <span className={`badge m-1 ${this.getCountColor()}`}>
+          Total: {this.getTotalItems()}
         </span>
-        <button onClick={this.increment} className="m-2 btn btn-dark">
+        <button onClick={this.increment} className="m-1 btn btn-dark">
           Add item
         </button>
-        <button onClick={this.removeAll} className="m-2 btn btn-danger">
+        <button onClick={this.removeAll} className="m-1 btn btn-danger">
           Remove all
         </button>
         <div>
