@@ -26,7 +26,7 @@ export default () => {
   const increment = () => {
     const id = uuid();
     const title = "Item " + id;
-    setIt([...items, { title, id, count: 0 }]);
+    setIt([...items, { title, id, count: 1 }]);
   };
 
   const removeAll = () => setIt([]);
