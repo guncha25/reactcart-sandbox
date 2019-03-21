@@ -6,9 +6,6 @@ export default () => (
     <Link className="nav-item navbar-brand" to="/">
       Home
     </Link>
-    <Link className="nav-item nav-link" to="/items">
-      Shop
-    </Link>
     <Link className="nav-item nav-link" to="/cart">
       Cart
     </Link>
