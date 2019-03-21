@@ -1,18 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 
-class ItemPage extends Component {
-  items = localStorage.getItem("items")
-    ? JSON.parse(localStorage.getItem("items"))
-    : [];
-  item = this.items.find(item => item.id === this.props.match.params.id);
+export default props => {
+  const item = JSON.parse(localStorage.getItem("items") || "[]").find(
+    item => item.id === props.match.params.id
+  );
 
-  render() {
-    return (
-      <div className="container">
-        <h1>{(this.item && this.item.title) || "Item not found"}</h1>
-      </div>
-    );
-  }
-}
-
-export default ItemPage;
+  return (
+    <div className="container">
+      <h1>{(item && item.title) || "Item not found"}</h1>
+    </div>
+  );
+};
