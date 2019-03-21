@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ItemGridItem from "./ItemGridItem";
 
-export default props => {
+export default () => {
   let [items] = useState(JSON.parse(localStorage.getItem("items") || "[]"));
   return (
     <div className="row">
