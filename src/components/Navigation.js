@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default () => (
-  <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
     <Link className="nav-item navbar-brand" to="/">
       Home
     </Link>

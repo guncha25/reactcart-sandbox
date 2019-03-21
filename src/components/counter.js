@@ -1,10 +1,5 @@
 import React, { Component } from "react";
 import Item from "./Item";
-import styled from "styled-components";
-
-const ListItem = styled.li`
-  background: #d8c7c7 !important;
-`;
 
 export default class Counter extends Component {
   constructor(props, context) {
@@ -17,43 +12,34 @@ export default class Counter extends Component {
   }
 
   increment = () => {
-    const newState = { ...this.state };
     const id = Math.random()
       .toString(30)
       .substring(2, 6);
-    newState.items = [
-      ...newState.items,
+    const items = [
+      ...this.state.items,
       {
         title: "Item " + id,
         id,
         count: 1
       }
     ];
-    this.setState(newState, this.refreshStorage);
+    this.setState({ items }, this.refreshStorage);
   };
 
-  updateItemCount = (updateItem, decrease = false) => {
-    const newState = { ...this.state };
-    newState.items = newState.items.map((item, index) => {
+  itemUpdate = (updateItem, decrease = false) => {
+    const items = [...this.state.items].map(item => {
       if (item.id === updateItem.id) {
-        if (!decrease) {
-          item.count++;
-        } else {
-          item.count--;
-          if (item.count < 1) {
-            item.count = 0;
-          }
-        }
+        if (!decrease && item.count++);
+        if (decrease && item.count-- && item.count < 1 && (item.count = 0));
       }
       return item;
     });
-    this.setState(newState, this.refreshStorage);
+    this.setState({ items }, this.refreshStorage);
   };
 
-  removeItem = itemId => {
-    const newState = { ...this.state };
-    newState.items = newState.items.filter(item => item.id !== itemId);
-    this.setState(newState, this.refreshStorage);
+  rm = itemId => {
+    const items = [...this.state.items].filter(item => item.id !== itemId);
+    this.setState({ items }, this.refreshStorage);
   };
   refreshStorage = () =>
     localStorage.setItem("items", JSON.stringify(this.state.items));
@@ -67,6 +53,7 @@ export default class Counter extends Component {
     this.getTotalItems() > 0 ? "badge-primary" : "badge-secondary";
 
   render() {
+    const { items } = this.state;
     return (
       <>
         <span className={`badge m-1 ${this.getCountColor()}`}>
@@ -83,14 +70,10 @@ export default class Counter extends Component {
         </button>
         <div>
           <ul className="list-group">
-            {this.state.items.map(item => (
-              <ListItem className="list-group-item" key={item.id}>
-                <Item
-                  updateItemCount={this.updateItemCount}
-                  removeItem={this.removeItem}
-                  data={item}
-                />
-              </ListItem>
+            {items.map(item => (
+              <Item key={item.id} itemUpdate={this.itemUpdate} rm={this.rm}>
+                {item}
+              </Item>
             ))}
           </ul>
         </div>
