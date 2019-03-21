@@ -7,13 +7,12 @@ const Count = styled.span`
   margin-left: 2em;
 `;
 
-export default props => {
-  const item = props.children;
+export default ({ item, itemUpdate, rm }) => {
   const count = e => {
-    props.itemUpdate(item, e.target.getAttribute("data-type") !== "add-one");
+    itemUpdate(item, e.target.getAttribute("data-type") !== "add-one");
   };
   const handleRemove = () => {
-    props.rm(item.id);
+    rm(item.id);
   };
   return (
     <li>

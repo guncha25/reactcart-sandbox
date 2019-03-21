@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
+import uuid from "uuid";
 
 export default () => {
   const [items, setIt] = useState(
@@ -10,29 +11,22 @@ export default () => {
     localStorage.setItem("items", JSON.stringify(items));
   });
 
-  const increment = () => {
-    const id = Math.random()
-      .toString(30)
-      .substring(2, 6);
-    setIt([
-      ...items,
-      {
-        title: "Item " + id,
-        id,
-        count: 1
-      }
-    ]);
+  const itemUpdate = (updateItem, decrease = false) => {
+    setIt(
+      [...items].map(item => {
+        if (item.id === updateItem.id) {
+          if (!decrease && item.count++);
+          if (decrease && item.count-- && item.count < 1 && (item.count = 0));
+        }
+        return item;
+      })
+    );
   };
 
-  const itemUpdate = (updateItem, decrease = false) => {
-    const newItems = [...items].map(item => {
-      if (item.id === updateItem.id) {
-        if (!decrease && item.count++);
-        if (decrease && item.count-- && item.count < 1 && (item.count = 0));
-      }
-      return item;
-    });
-    setIt(newItems);
+  const increment = () => {
+    const id = uuid();
+    const title = "Item " + id;
+    setIt([...items, { title, id, count: 0 }]);
   };
 
   const removeAll = () => setIt([]);
@@ -54,9 +48,7 @@ export default () => {
       <div>
         <ul className="list-group">
           {items.map(item => (
-            <CartItem key={item.id} itemUpdate={itemUpdate} rm={rm}>
-              {item}
-            </CartItem>
+            <CartItem {...{ key: item.id, item, itemUpdate, rm }} />
           ))}
         </ul>
       </div>
