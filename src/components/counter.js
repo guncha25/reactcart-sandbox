@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Item from "./Item";
 
 export default () => {
-  let [items, setIt] = useState(
+  const [items, setIt] = useState(
     JSON.parse(localStorage.getItem("items") || "[]")
   );
 
