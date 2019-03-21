@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Item from "./Item";
+import CartItem from "./CartItem";
 
 export default () => {
   const [items, setIt] = useState(
@@ -54,9 +54,9 @@ export default () => {
       <div>
         <ul className="list-group">
           {items.map(item => (
-            <Item key={item.id} itemUpdate={itemUpdate} rm={rm}>
+            <CartItem key={item.id} itemUpdate={itemUpdate} rm={rm}>
               {item}
-            </Item>
+            </CartItem>
           ))}
         </ul>
       </div>

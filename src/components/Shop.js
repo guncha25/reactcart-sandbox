@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import ItemGridItem from "./ItemGridItem";
+import ShopItem from "./ShopItem";
 
 export default () => {
   const [items] = useState(JSON.parse(localStorage.getItem("items") || "[]"));
   return (
     <div className="row">
       {items.map(item => (
-        <ItemGridItem item={item} key={item.id} />
+        <ShopItem item={item} key={item.id} />
       ))}
     </div>
   );
