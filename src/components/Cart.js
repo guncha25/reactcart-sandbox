@@ -3,32 +3,7 @@ import CartItem from "./CartItem";
 import uuid from "uuid";
 
 export default () => {
-  const [items, setIt] = useState(
-    JSON.parse(localStorage.getItem("items") || "[]")
-  );
-
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items));
-  });
-
-  const itemUpdate = (updateItem, decrease = false) => {
-    setIt(
-      [...items].map(item => {
-        if (item.id === updateItem.id) {
-          if (!decrease && item.count++);
-          if (decrease && item.count-- && item.count < 1 && (item.count = 0));
-        }
-        return item;
-      })
-    );
-  };
-
-  const increment = () => {
-    const id = uuid();
-    const title = "Item " + id;
-    setIt([...items, { title, id, count: 1 }]);
-  };
-
+  const { items, setIt, increment, itemUpdate } = useItems();
   const removeAll = () => setIt([]);
   const rm = itemId => setIt([...items].filter(item => item.id !== itemId));
   const getTotal = () => items.reduce((tally, item) => tally + item.count, 0);
@@ -55,3 +30,30 @@ export default () => {
     </>
   );
 };
+
+function useItems() {
+  const [items, setIt] = useState(
+    JSON.parse(localStorage.getItem("items") || "[]")
+  )
+  //
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+  });
+  const itemUpdate = (updateItem, decrease = false) => {
+    setIt(
+      [...items].map(item => {
+        if (item.id === updateItem.id) {
+          if (!decrease && item.count++);
+          if (decrease && item.count-- && item.count < 1 && (item.count = 0));
+        }
+        return item;
+      })
+    );
+  };
+  const increment = () => {
+    const id = uuid();
+    const title = "Item " + id;
+    setIt([...items, { title, id, count: 1 }]);
+  };
+  return { items, itemUpdate, increment, setIt };
+}
