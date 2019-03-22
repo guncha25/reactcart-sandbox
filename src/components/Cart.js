@@ -34,8 +34,7 @@ export default () => {
 function useItems() {
   const [items, setIt] = useState(
     JSON.parse(localStorage.getItem("items") || "[]")
-  )
-  //
+  );
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(items));
   });
