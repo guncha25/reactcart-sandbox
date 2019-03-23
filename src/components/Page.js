@@ -4,17 +4,22 @@ import Navigation from "./Navigation";
 import Cart from "./Cart";
 import Shop from "./Shop";
 import Item from "./Item";
-
-const Sell = () => <h2>Sell</h2>;
+import Sell from "./Sell";
+import CartContext from "./CartContext";
+import StoreItemContext from "./StoreItemContext";
 
 export default () => (
   <Router>
     <div>
-      <Navigation />
-      <Route path="/" exact component={Shop} />
-      <Route path="/cart" component={Cart} />
-      <Route path="/sell" component={Sell} />
-      <Route path="/item/:id" component={Item} />
+      <StoreItemContext>
+        <CartContext>
+          <Navigation />
+          <Route path="/" exact component={Shop} />
+          <Route path="/cart" component={Cart} />
+          <Route path="/sell" component={Sell} />
+          <Route path="/item/:id" component={Item} />
+        </CartContext>
+      </StoreItemContext>
     </div>
   </Router>
 );

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { MyCartContext } from "./CartContext";
+import { StoreContext } from "./StoreItemContext";
 
 const Count = styled.span`
   font-size: 1.75rem;
@@ -7,13 +9,31 @@ const Count = styled.span`
   margin-left: 2em;
 `;
 
-export default ({ item, itemUpdate, rm }) => {
+export default ({ cid }) => {
+  const { items } = useContext(StoreContext);
+  const { itemUpdate, rm, cartItems } = useContext(MyCartContext);
+  const item = items.find(item => item.id === cid);
+  const cartItem = cartItems.find(item => item.id === cid);
   const count = e => {
-    itemUpdate(item, e.target.getAttribute("data-type") !== "add-one");
+    itemUpdate(cid, e.target.getAttribute("data-type") !== "add-one");
   };
   const handleRemove = () => {
-    rm(item.id);
+    rm(cid);
   };
+  if (!item) {
+    return (
+      <li>
+        <h3>Item no longer available</h3>
+        <button
+          data-type="remove"
+          onClick={handleRemove}
+          className="btn btn-danger m-1 float-right"
+        >
+          Remove
+        </button>
+      </li>
+    );
+  }
   return (
     <li>
       <h3>{item.title}</h3>
@@ -22,7 +42,7 @@ export default ({ item, itemUpdate, rm }) => {
           +
         </button>
         <button
-          disabled={item.count < 1}
+          disabled={cartItem.count < 1}
           data-type="remove-one"
           onClick={count}
           className="btn btn-warning"
@@ -31,8 +51,8 @@ export default ({ item, itemUpdate, rm }) => {
         </button>
       </div>
       <Count>
-        {item.count === 0 ? "No" : item.count} Item
-        {item.count !== 1 ? "s" : ""}
+        {cartItem.count === 0 ? "No" : cartItem.count} Item
+        {cartItem.count !== 1 ? "s" : ""}
       </Count>
       <button
         data-type="remove"
