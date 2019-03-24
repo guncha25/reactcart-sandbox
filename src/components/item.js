@@ -25,7 +25,7 @@ export default props => {
 
   return (
     <div className="container">
-      <h1>item.title</h1>
+      <h1>{item.title}</h1>
       <button className="btn btn-success" onClick={addItemToCart}>
         Add to cart{" "}
         <span role="img" aria-label="cart">
