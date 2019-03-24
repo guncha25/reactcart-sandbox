@@ -4,8 +4,11 @@ import { StoreContext } from "./StoreItemContext";
 
 export default props => {
   const { addToCart } = useContext(MyCartContext);
-  const { rm, items } = useContext(StoreContext);
-  const item = items.find(item => item.id === props.match.params.id);
+  const { rm, items, user } = useContext(StoreContext);
+  if (items === "loading") {
+    return <h1>Loading...</h1>;
+  }
+  const item = items.find(item => item && item.id === props.match.params.id);
   if (!item) {
     return (
       <div className="container">
@@ -29,12 +32,14 @@ export default props => {
           🛒
         </span>
       </button>
-      <button className="btn btn-warning" onClick={remove}>
-        Remove{" "}
-        <span role="img" aria-label="stop">
-          🛑
-        </span>
-      </button>
+      {user && user.uid === item.uid && (
+        <button className="btn btn-warning" onClick={remove}>
+          Remove{" "}
+          <span role="img" aria-label="stop">
+            🛑
+          </span>
+        </button>
+      )}
     </div>
   );
 };

@@ -1,10 +1,19 @@
-import React, { useContext, createRef } from "react";
+import React, { useContext, createRef, useEffect } from "react";
 import { StoreContext } from "./StoreItemContext";
+import { NotificationManager } from "react-notifications";
 
 const titleRef = createRef();
 
 export default props => {
-  const { addItem } = useContext(StoreContext);
+  const { addItem, user } = useContext(StoreContext);
+  if (!user) {
+    props.history.push("/");
+  }
+  useEffect(() => {
+    if (!user) {
+      NotificationManager.warning("Please log in", "👮‍♂️", 3000);
+    }
+  }, [user]);
 
   const saveItem = event => {
     event.preventDefault();
