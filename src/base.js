@@ -2,10 +2,10 @@ import firebase from "firebase/app";
 import "firebase/database"; // If using Firebase database
 
 const fbase = firebase.initializeApp({
-  apiKey: "AIzaSyCQOTvONvrgFW174xd3TOVk-_gxbwLYRAU",
-  authDomain: "mycart-sandbox.firebaseapp.com",
-  databaseURL: "https://mycart-sandbox.firebaseio.com",
-  projectId: "mycart-sandbox"
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  databaseURL: process.env.REACT_APP_databaseURL,
+  projectId: process.env.REACT_APP_projectId
 });
 
 export default fbase;
