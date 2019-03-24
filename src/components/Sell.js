@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect } from "react";
 import { StoreContext } from "./StoreItemContext";
 import { NotificationManager } from "react-notifications";
+import { DivContainer, DivItem } from "./Pose";
 
 export default props => {
   const titleRef = useRef(null);
@@ -22,24 +23,28 @@ export default props => {
   };
 
   return (
-    <form className="container" onSubmit={saveItem}>
-      <div className="form-group">
-        <label htmlFor="title">Email address</label>
-        <input
-          type="text"
-          ref={titleRef}
-          className="form-control"
-          id="title"
-          aria-describedby="title"
-          placeholder="Item"
-        />
-        <small id="emailHelp" className="form-text text-muted">
-          Add items name.
-        </small>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
-    </form>
+    <DivContainer initialPose="exit" pose="enter">
+      <form className="container" onSubmit={saveItem}>
+        <DivItem initialPose="exit" pose="enter" className="form-group">
+          <label htmlFor="title">Email address</label>
+          <input
+            type="text"
+            ref={titleRef}
+            className="form-control"
+            id="title"
+            aria-describedby="title"
+            placeholder="Item"
+          />
+          <small id="emailHelp" className="form-text text-muted">
+            Add items name.
+          </small>
+        </DivItem>
+        <DivItem initialPose="exit" pose="enter">
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </DivItem>
+      </form>
+    </DivContainer>
   );
 };

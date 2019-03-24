@@ -12,6 +12,9 @@ const Count = styled.span`
 export default ({ cid }) => {
   const { items } = useContext(StoreContext);
   const { itemUpdate, rm, cartItems } = useContext(MyCartContext);
+  if (items === "loading") {
+    return "";
+  }
   const item = items.find(item => item.id === cid);
   const cartItem = cartItems.find(item => item.id === cid);
   const count = e => {
@@ -22,7 +25,7 @@ export default ({ cid }) => {
   };
   if (!item) {
     return (
-      <li>
+      <>
         <h3>Item no longer available</h3>
         <button
           data-type="remove"
@@ -31,11 +34,11 @@ export default ({ cid }) => {
         >
           Remove
         </button>
-      </li>
+      </>
     );
   }
   return (
-    <li>
+    <>
       <h3>{item.title}</h3>
       <div className="btn-group">
         <button data-type="add-one" onClick={count} className="btn btn-success">
@@ -61,6 +64,6 @@ export default ({ cid }) => {
       >
         Remove
       </button>
-    </li>
+    </>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import CartItem from "./CartItem";
 import { MyCartContext } from "./CartContext";
+import { UlContainer, LiItem } from "./Pose";
 
 export default () => {
   const { cartItems, removeAll, getTotal, getUnique, getColor } = useContext(
@@ -15,11 +16,17 @@ export default () => {
         Remove all
       </button>
       <div>
-        <ul className="list-group">
+        <UlContainer initialPose="exit" pose="enter" className="list-group">
           {cartItems.map(item => (
-            <CartItem {...{ key: item.id, cid: item.id }} />
+            <LiItem
+              initialPose="exit"
+              pose="enter"
+              {...{ key: item.id, cid: item.id }}
+            >
+              <CartItem {...{ cid: item.id }} />
+            </LiItem>
           ))}
-        </ul>
+        </UlContainer>
       </div>
     </>
   );

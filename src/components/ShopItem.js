@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FigureItem } from "./Pose";
 
 export default props => {
   return (
-    <figure className="col-md-4">
+    <FigureItem className="col-md-4">
       <Link to={`item/${props.item.id}`}>
         <img
           alt={props.item.title}
@@ -12,6 +13,6 @@ export default props => {
         />
         <h2>{props.item.title}</h2>
       </Link>
-    </figure>
+    </FigureItem>
   );
 };
