@@ -1,45 +1,44 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import uuid from "uuid";
-import base from "./../base";
+import fbase from "./../base";
 
 const StoreContext = React.createContext();
 
-export default class StoreItemContext extends Component {
+export default props => {
   // Set items state
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: []
-    };
-  }
-  componentDidMount() {
-    this.ref = base.syncState(`items`, {
-      context: this,
-      state: "items",
-      defaultValue: []
+  const [items, setItems] = useState("loading");
+  const [doReload, reload] = useState(false);
+
+  const itemSnapshot = fbase.ref();
+
+  // Update item storage on change
+  useEffect(() => {
+    itemSnapshot.child("items").on("value", snapshot => {
+      if (snapshot.val() !== null && setItems([...snapshot.val()]));
     });
-  }
+    if (doReload && itemSnapshot.child("items").set(items) && reload(false));
+    return () => {
+      itemSnapshot.child("items").off("value");
+    };
+  }, [doReload]);
 
   // Add item callback
-  addItem = title => {
-    this.setState({ items: [...this.state.items, { title, id: uuid() }] });
+  const addItem = title => {
+    setItems([...items, { title, id: uuid() }]);
+    reload(true);
   };
 
   // Remove item callback
-  rm = itemId =>
-    this.setState({
-      items: [...this.state.items].filter(item => item.id !== itemId)
-    });
+  const rm = itemId => {
+    setItems([...items].filter(item => item.id !== itemId));
+    reload(true);
+  };
 
-  render() {
-    const { addItem, rm } = this;
-    const { items } = this.state;
-    return (
-      <StoreContext.Provider value={{ items, addItem, rm }}>
-        {this.props.children}
-      </StoreContext.Provider>
-    );
-  }
-}
+  return (
+    <StoreContext.Provider value={{ items, addItem, rm }}>
+      {props.children}
+    </StoreContext.Provider>
+  );
+};
 
 export { StoreContext };

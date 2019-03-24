@@ -1,13 +1,13 @@
 import firebase from "firebase/app";
-import "firebase/database";
-import Rebase from "re-base";
+import "firebase/database"; // If using Firebase database
 
-const firebaseApp = firebase.initializeApp({
-  databaseURL: "https://mycart-sandbox.firebaseio.com"
-});
+const fbase = firebase
+  .initializeApp({
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseURL: "https://mycart-sandbox.firebaseio.com",
+    projectId: process.env.PROJECT_ID
+  })
+  .database();
 
-const base = Rebase.createClass(firebase.database());
-
-export { firebaseApp };
-
-export default base;
+export default fbase;
