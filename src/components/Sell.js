@@ -1,10 +1,9 @@
-import React, { useContext, createRef, useEffect } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { StoreContext } from "./StoreItemContext";
 import { NotificationManager } from "react-notifications";
 
-const titleRef = createRef();
-
 export default props => {
+  const titleRef = useRef(null);
   const { addItem, user } = useContext(StoreContext);
   if (!user) {
     props.history.push("/");
